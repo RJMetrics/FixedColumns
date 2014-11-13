@@ -1,5 +1,5 @@
 {
-	"name": "datatables-fixedcolumns",
+	"name": "rjm-datatables-fixedcolumns",
 	"version": "3.0.2",
 	"main": [
 		"js/dataTables.fixedColumns.js",

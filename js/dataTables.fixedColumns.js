@@ -1,3 +1,11 @@
+/* RJM Changes:
+ *	Modified this extension
+ *		- Added 1px top margin to line up fixed col with table (672)
+ *		- Added logic for highlighting both fixed col row and table row
+ *			when scrolling (1405)
+ */
+
+
 /*! FixedColumns 3.0.3-dev
  * ©2010-2014 SpryMedia Ltd - datatables.net/license
  */
@@ -663,7 +671,7 @@ FixedColumns.prototype = /** @lends FixedColumns.prototype */{
 				'<div class="DTFC_LeftWrapper" style="position:absolute; top:0; left:0;">'+
 					'<div class="DTFC_LeftHeadWrapper" style="position:relative; top:0; left:0; overflow:hidden;"></div>'+
 					'<div class="DTFC_LeftBodyWrapper" style="position:relative; top:0; left:0; overflow:hidden;">'+
-						'<div class="DTFC_LeftBodyLiner" style="position:relative; top:0; left:0; overflow-y:scroll;"></div>'+
+						'<div class="DTFC_LeftBodyLiner" style="position:relative; top:0; left:0; overflow-y:scroll; margin-top:-1px"></div>'+ /* RJM Change: Added margin-top */
 					'</div>'+
 					'<div class="DTFC_LeftFootWrapper" style="position:relative; top:0; left:0; overflow:hidden;"></div>'+
 				'</div>'+
@@ -1407,6 +1415,24 @@ else if ( jQuery && !jQuery.fn.dataTable.FixedColumns ) {
 	// Otherwise simply initialise as normal, stopping multiple evaluation
 	factory( jQuery, jQuery.fn.dataTable );
 }
+
+/* RJM Change - Addition */
+$(document).on({
+	mouseenter: function () {
+		var headerRowLength = $(this).parents('div.dataTables_wrapper').find('div.dataTables_scroll').children('div.dataTables_scrollHead').find('tr').length;
+		trIndex = $(this).index()+1+(headerRowLength - 1);
+
+		$(this).parents('div.dataTables_wrapper').find('table.dataTable').find("tr:eq("+trIndex+")").addClass("fixed-cols-hover");
+		$(this).parents('div.dataTables_wrapper').find('table.DTFC_Cloned').find("tr:eq("+trIndex+")").addClass("fixed-cols-hover");
+	},
+	mouseleave: function () {
+		var headerRowLength = $(this).parents('div.dataTables_wrapper').find('div.dataTables_scroll').children('div.dataTables_scrollHead').find('tr').length;
+		trIndex = $(this).index()+1+(headerRowLength - 1);
+		
+		$(this).parents('div.dataTables_wrapper').find('table.dataTable').find("tr:eq("+trIndex+")").removeClass("fixed-cols-hover");
+		$(this).parents('div.dataTables_wrapper').find('table.DTFC_Cloned').find("tr:eq("+trIndex+")").removeClass("fixed-cols-hover");
+	}
+}, ".dataTables_wrapper tr");
 
 
 })(window, document);

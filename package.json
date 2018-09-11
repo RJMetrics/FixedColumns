@@ -1,0 +1,9 @@
+{
+  "name": "datatables-fixedcolumns",
+  "version": "3.0.2",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/RJMetrics/FixedColumns.git"
+  },
+  "main": "js/dataTables.fixedColumns.js",
+}
